@@ -24,7 +24,7 @@
               <i class="fa fa-picture-o"></i> 选择图片
             </button>
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#import-data-modal">
-              <i class="fa fa-table"></i> 导入数据
+              <i class="fa fa-table"></i> 管理数据
             </button>
           </div>
           <div class="table-wrapper">
@@ -93,25 +93,28 @@
     </transition>
     <div class="modal" tabindex="-1" role="dialog" id="import-data-modal">
       <div class="modal-dialog modal-lg" role="document">
-        <form @submit.prevent="importDataSubmit">
+        <form @submit.prevent="parseImport">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">导入数据</h5>
+              <h5 class="modal-title">数据管理</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
+              <p>导入</p>
               <div class="form-group">
-                <textarea class="form-control" rows="8" v-model="importInput"></textarea>
+                <textarea class="form-control" rows="8" v-model="importInput" placeholder="支持从Excel中粘贴" required></textarea>
               </div>
-              <div class="form-group">
-                <button type="button" class="btn btn-outline-primary" @click="parseImport"><i class="fa fa-bolt"></i> 解析</button>
+              <div class="form-group" style="text-align:right">
+                <button type="submit" class="btn btn-outline-primary"><i class="fa fa-bolt"></i> 导入数据</button>
               </div>
+              <hr>
+              <p>预览</p>
               <div class="form-group">
                 <div style="max-height: 300px;overflow:auto">
                   <table class="table table-bordered table-hover">
-                    <tr v-for="(item, index) in tmpSourceList">
+                    <tr v-for="(item, index) in sourceList">
                       <td># {{index+1}}</td>
                       <td v-for="value in item">{{value}}</td>
                     </tr>
@@ -120,7 +123,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="submit" class="btn btn-primary">OK</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
             </div>
           </div>
         </form>

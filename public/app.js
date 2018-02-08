@@ -19,6 +19,8 @@ function dataURItoBlob(dataURI) {
   });
 }
 
+const LS_PREFIX = "cert_img_gen_";
+
 var app = new Vue({
   el: '#app',
   data: function () {
@@ -29,7 +31,6 @@ var app = new Vue({
       imageHeight: 0,
       importInput: '',
       sourceList: [],
-      tmpSourceList: [],
       cfgList: [],
       batchLog: [],
       cordPreview: '',
@@ -37,6 +38,7 @@ var app = new Vue({
     };
   },
   mounted() {
+    this.loadCfg();
     this.previewEl = document.querySelector('#img-preview');
     this.imageEl = document.querySelector('#main-canvas');
     const appEl = document.querySelector('#app');
@@ -50,6 +52,15 @@ var app = new Vue({
       this.cordPreview = `(${x},${y})`;
       if (e.shiftKey) {
         this.addCfgItem(x, y);
+      }
+    },
+    saveCfg() {
+      localStorage.setItem(LS_PREFIX + 'cfg', JSON.stringify(this.cfgList));
+    },
+    loadCfg() {
+      const cfg = localStorage.getItem(LS_PREFIX + 'cfg');
+      if (cfg) {
+        this.cfgList = JSON.parse(cfg);
       }
     },
     updateBgImage(img) {
@@ -130,6 +141,9 @@ var app = new Vue({
       }
     },
     draw(dataItem) {
+      if (!dataItem) {
+        this.saveCfg();
+      }
       if (!this.bgImage) {
         alert('请先选择背景图');
         return false;
@@ -175,7 +189,7 @@ var app = new Vue({
       //imageEl.style.height = imageSize + 'px';
     },
     parseImport() {
-      this.tmpSourceList = this.importInput.split('\n').filter(function (line) {
+      this.sourceList = this.importInput.split('\n').filter(function (line) {
         return line.trim() != '';
       }).map(function (line) {
         return line.split('	').map(function (str) {
@@ -183,11 +197,6 @@ var app = new Vue({
         });
       });
       this.importInput = '';
-    },
-    importDataSubmit() {
-      $('#import-data-modal').modal('hide');
-      this.sourceList = this.tmpSourceList;
-      this.tmpSourceList = [];
     },
     toast(val) {
       this.toastText = val;
