@@ -161,10 +161,10 @@ var app = new Vue({
     },
     addCfgItem(x, y) {
       this.cfgList.push({
-        x: (x || 100),
-        y: (y || 100),
+        x: (x || 300),
+        y: (y || 300),
         font: '微软雅黑',
-        fontSize: 88,
+        fontSize: 36,
         color: '#fff'
       });
     },
