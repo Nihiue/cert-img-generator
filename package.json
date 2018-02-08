@@ -1,0 +1,23 @@
+{
+  "name": "cert-img-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nihiue/cert-img-generator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nihiue/cert-img-generator/issues"
+  },
+  "homepage": "https://github.com/Nihiue/cert-img-generator#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "formidable": "^1.1.1"
+  }
+}
