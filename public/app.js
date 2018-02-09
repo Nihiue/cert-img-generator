@@ -115,7 +115,7 @@ var app = new Vue({
         const item = self.sourceList.pop();
         self.draw(item);
         self.saveCurrentImage(item[fileNameIndex], batchId);
-      }, 500);
+      }, 300);
     },
     logBatchInfo(str) {
       this.batchLog.push(str);
@@ -158,8 +158,8 @@ var app = new Vue({
       ctx.clearRect(0, 0, this.imageWidth, this.imageHeight);
       ctx.drawImage(this.bgImage, 0, 0);
 
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'bottom';
       /*
       ctx.shadowBlur = 10;
       ctx.shadowOffsetX = 5;
