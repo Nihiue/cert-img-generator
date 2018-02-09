@@ -46,9 +46,10 @@ var app = new Vue({
   },
   methods: {
     imageClick(e) {
+      console.log(e);
       const rect = this.imageEl.getClientRects()[0];
-      const x = Math.round(e.clientX / rect.width * this.imageWidth);
-      const y = Math.round(e.clientY / rect.height * this.imageHeight)
+      const x = Math.round(e.offsetX / rect.width * this.imageWidth);
+      const y = Math.round(e.offsetY / rect.height * this.imageHeight)
       this.cordPreview = `(${x},${y})`;
       if (e.shiftKey) {
         this.addCfgItem(x, y);
@@ -68,7 +69,7 @@ var app = new Vue({
       this.imageHeight = img.naturalHeight;
       this.imageWidth = img.naturalWidth;
       this.updateImageSize();
-      this.draw();
+      this.drawPreview();
     },
     imageChanged(e) {
       const file = e.target.files[0];
@@ -114,7 +115,7 @@ var app = new Vue({
         const item = self.sourceList.pop();
         self.draw(item);
         self.saveCurrentImage(item[fileNameIndex], batchId);
-      }, 1000);
+      }, 500);
     },
     logBatchInfo(str) {
       this.batchLog.push(str);
@@ -140,22 +141,23 @@ var app = new Vue({
         console.log(e);
       }
     },
+    drawPreview() {
+      this.saveCfg();
+      this.draw(this.sourceList[0] || ['DATA1', 'DATA2', 'DATA3', 'DATA4', 'DATA5']);
+    },
     draw(dataItem) {
-      if (!dataItem) {
-        this.saveCfg();
-      }
       if (!this.bgImage) {
         alert('请先选择背景图');
         return false;
+      }
+      if (!dataItem) {
+        alert('未提供数据');
+        return;
       }
       const ctx = this.imageEl.getContext('2d');
       ctx.clearRect(0, 0, this.imageWidth, this.imageHeight);
       ctx.drawImage(this.bgImage, 0, 0);
 
-      let data = dataItem;
-      if (!data) {
-        data = this.sourceList[0] || ['DATA1', 'DATA2', 'DATA3', 'DATA4', 'DATA5'];
-      }
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       /*
@@ -169,7 +171,7 @@ var app = new Vue({
         const lineHeight = Math.round(fontSize * 1.2);
         ctx.font = `${fontSize}px/${lineHeight}px ${item.font || '微软雅黑'}`;
         ctx.fillStyle = item.color || '#000000';
-        ctx.fillText((data[index] || 'DEMO TEXT').toString(), item.x, item.y - fontSize);
+        ctx.fillText((dataItem[index] || 'DEMO TEXT').toString(), item.x, item.y);
       });
       return true;
     },
@@ -181,6 +183,11 @@ var app = new Vue({
         fontSize: 36,
         color: '#fff'
       });
+      this.drawPreview();
+    },
+    removeCfgItem(index) {
+      this.cfgList.splice(index, 1);
+      this.drawPreview();
     },
     updateImageSize() {
       this.imageEl.width = this.imageWidth;

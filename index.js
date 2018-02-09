@@ -3,8 +3,13 @@ var formidable = require('formidable')
 var fs = require('fs');
 var app = express();
 var path = require('path');
-const PORT = 8000;
+const PORT = 3000;
 
+try {
+  fs.accessSync('./upload')
+} catch (e) {
+  fs.mkdirSync('./upload');
+}
 
 app.post('/api/savefile', function (req, res) {
   var form = new formidable.IncomingForm();
@@ -37,6 +42,7 @@ app.post('/api/savefile', function (req, res) {
     }
   });
 });
+
 app.use(express.static('public'));
 var server = app.listen(PORT, function () {
   console.log('App listening at http://localhost:%s', PORT);

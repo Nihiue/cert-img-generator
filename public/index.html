@@ -65,13 +65,13 @@
                   <input class="form-control form-control-sm" type="text" v-model="item.color">
                 </td>
                 <td>
-                  <button class="btn btn-sm btn-outline-danger" @click="cfgList.splice(index, 1)">
+                  <button class="btn btn-sm btn-outline-danger" @click="removeCfgItem(index)">
                     <i class="fa fa-remove"></i>
                   </button>
                 </td>
               </tr>
             </table>
-            <button type="button" class="btn btn-primary" style="margin-right: 16px" @click="draw()">
+            <button type="button" class="btn btn-primary" style="margin-right: 16px" @click="drawPreview()">
               <i class="fa fa-play"></i> 预览
             </button>
             <button type="button" class="btn btn-outline-primary" @click="batch()">
@@ -79,7 +79,7 @@
             </button>
           </div>
         </div>
-        <div v-show="isBatchWorking" style="max-height:80vh;overflow-y:auto;padding:10px">
+        <div v-show="isBatchWorking" style="padding:10px">
           <p v-for="log in batchLog">{{log}}</p>
         </div>
       </div>
