@@ -15,7 +15,6 @@
     <div class="layout-container">
       <div class="image-area">
         <canvas id="main-canvas" @click="imageClick"></canvas>
-        <p v-if="cordPreview">{{cordPreview}}</p>
       </div>
       <div class="table-area">
         <div v-show="!isBatchWorking">
@@ -36,6 +35,7 @@
                 <th>字体</th>
                 <th>字号</th>
                 <th>颜色</th>
+                <th>对齐</th>
                 <th>
                   <button type="button" class="btn btn-outline-success" @click="addCfgItem()">
                     <i class="fa fa-plus"></i>
@@ -64,6 +64,13 @@
                 <td>
                   <input class="form-control form-control-sm" type="text" v-model="item.color">
                 </td>
+                <td style="width: 6em">
+                  <select class="form-control form-control-sm" v-model="item.align">
+                    <option value="left">靠左</option>
+                    <option value="center">居中</option>
+                    <option value="right">靠右</option>
+                  </select>
+                </td>
                 <td>
                   <button class="btn btn-sm btn-outline-danger" @click="removeCfgItem(index)">
                     <i class="fa fa-remove"></i>
@@ -77,6 +84,7 @@
             <button type="button" class="btn btn-outline-primary" @click="batch()">
               <i class="fa fa-rocket"></i> 批量执行
             </button>
+            <p v-if="cordPreview" class="text-right">Click: {{cordPreview}}</p>
           </div>
         </div>
         <div v-show="isBatchWorking" style="padding:10px">

@@ -61,7 +61,12 @@ var app = new Vue({
     loadCfg() {
       const cfg = localStorage.getItem(LS_PREFIX + 'cfg');
       if (cfg) {
-        this.cfgList = JSON.parse(cfg);
+        this.cfgList = JSON.parse(cfg).map(function(el) {
+          if (!el.align) {
+            el.align = 'left';
+          }
+          return el;
+        });
       }
     },
     updateBgImage(img) {
@@ -122,7 +127,7 @@ var app = new Vue({
     },
     async saveCurrentImage(name, folder) {
       const self = this;
-      const blob = dataURItoBlob(this.imageEl.toDataURL('image/jpeg', 0.85));
+      const blob = dataURItoBlob(this.imageEl.toDataURL('image/jpeg', 0.8));
       formData = new FormData();
       formData.append('uploadFile', blob);
       formData.append('fileName', name + '.jpg');
@@ -158,8 +163,8 @@ var app = new Vue({
       ctx.clearRect(0, 0, this.imageWidth, this.imageHeight);
       ctx.drawImage(this.bgImage, 0, 0);
 
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
+
+      ctx.textBaseline = 'middle';
       /*
       ctx.shadowBlur = 10;
       ctx.shadowOffsetX = 5;
@@ -171,6 +176,7 @@ var app = new Vue({
         const lineHeight = Math.round(fontSize * 1.2);
         ctx.font = `${fontSize}px/${lineHeight}px ${item.font || '微软雅黑'}`;
         ctx.fillStyle = item.color || '#000000';
+        ctx.textAlign = item.align || 'left';
         ctx.fillText((dataItem[index] || 'DEMO TEXT').toString(), item.x, item.y);
       });
       return true;
@@ -180,8 +186,9 @@ var app = new Vue({
         x: (x || 300),
         y: (y || 300),
         font: '微软雅黑',
-        fontSize: 36,
-        color: '#fff'
+        fontSize: 28,
+        color: '#fff',
+        align: 'left'
       });
       this.drawPreview();
     },
