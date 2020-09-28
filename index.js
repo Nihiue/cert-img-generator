@@ -5,10 +5,12 @@ var app = express();
 var path = require('path');
 const PORT = 3000;
 
+const outputPath = path.join(process.cwd(), 'upload');
+
 try {
-  fs.accessSync('./upload')
+  fs.accessSync(outputPath)
 } catch (e) {
-  fs.mkdirSync('./upload');
+  fs.mkdirSync(outputPath);
 }
 
 app.post('/api/savefile', function (req, res) {
@@ -22,7 +24,7 @@ app.post('/api/savefile', function (req, res) {
         console.log(folderName, fileName, files.uploadFile);
         throw new Error('输入不完整');
       }
-      const folderPath = path.join('./upload', folderName);
+      const folderPath = path.join(outputPath, folderName);
       try {
         fs.accessSync(folderPath)
       } catch (e) {
@@ -42,8 +44,8 @@ app.post('/api/savefile', function (req, res) {
     }
   });
 });
-
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public/')));
 var server = app.listen(PORT, function () {
   console.log('App listening at http://localhost:%s', PORT);
+  console.log('Output:', outputPath);
 });

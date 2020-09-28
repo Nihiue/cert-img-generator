@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "bin": "index.js",
   "scripts": {
     "start": "node index.js"
   },
@@ -19,5 +20,8 @@
   "dependencies": {
     "express": "^4.16.2",
     "formidable": "^1.1.1"
+  },
+  "pkg": {
+    "assets": "public/**/*"
   }
 }
